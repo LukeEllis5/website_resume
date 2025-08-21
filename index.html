@@ -1,33 +1,128 @@
-<header>
-  <h1>Luke Ellis</h1>
-</header>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luke Ellis | About</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-text">
+        <h1>Luke <span>Ellis</span> <small>Data Professional</small></h1>
+      </div>
+    </header>
 
-<nav>
-  <a href="#about">About</a>
-  <a href="#projects">Projects</a>
-  <a href="#contact">Contact Me</a>
-</nav>
+    <nav>
+      <a href="#about">About</a>
+      <a href="experience.html">Experience</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact Me</a>
+    </nav>
 
-<main>
-  <section id="about">
-    <h2>About</h2>
-    <p>Your bio here...</p>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="project">
-      <h3>Project Title</h3>
-      <p>Project description...</p>
+    <main>
+      <section id="about" class="about-with-photo">
+        <div class="about-image">
+          <img src="assets/headshot.jpg" alt="Luke Ellis headshot" />
+        </div>
+        <div class="about-text">
+          <h2>About</h2>
+          <p>
+            I'm a data professional who enjoys solving problems and uncovering
+            insights that drive real impact. With a background in finance, I
+            bring a unique perspective that combines analytical thinking with
+            business context.
+          </p>
+          <p>
+            I’m someone who enjoys challenging themselves with work projects
+            that allow me to grow my skillset. Some of my recent work includes
+            building a Markov Analysis model to predict the probability of the
+            next month’s charge-off amount, resulting in a margin of error of
+            2%. Using SQL and Python, I was able to clean and transform the data
+            to capture the historical percentage changes of borrowers’
+            delinquencies from month to month.
+          </p>
+          <p>
+            Outside of work, I’m passionate about growing my skillset through
+            competitions and side projects. This past year, I competed in the
+            NFL Big Data Bowl, using real in-game data to create a Random Forest
+            Classifier to predict the probability that the next play would be a
+            run play based on the offense’s pre-snap movement. This achieved an
+            accuracy of 80.9% and a ROC AUC of 87.4% on the test set. I also
+            built a ETL pipeline using Community Transit’s publicly available
+            data, transforming and loading it into structured tables for end
+            user access.
+          </p>
+          <p>
+            As someone who’s been an end user in the data lifecycle, I
+            understand the value of clean, organized data and the challenges
+            when it’s not. Continuous improvement is a core part of how I work
+            and how I approach life. I regularly attend local data meetups in
+            the Seattle area to connect with others in the field and stay
+            inspired by the projects and ideas people share.
+          </p>
+          <p>
+            Being a strong teammate is something I take a lot of pride in. I
+            believe that when we work together and lean on each other’s
+            strengths, then we can solve far more than if we were alone. I’m a
+            gritty, reliable team player, and one of my proudest accomplishments
+            is being the first in my family to graduate college while working
+            two jobs to pay for tuition.
+          </p>
+        </div>
+      </section>
+    </main>
+<section class="testimonials-section">
+    <h2>What Colleagues Say</h2>
+    <div class="testimonials-grid">
+        <a href="https://www.linkedin.com/in/luke-ellis-89b43a173/" target="_blank" class="testimonial-link">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="recommender-info">
+                        <strong>Jan Majek</strong>
+                        <span>Commercial and Consumer Credit Analytics</span>
+                        <div class="recommendation-date">February 13, 2025, Jan managed Luke directly</div>
+                    </div>
+                    <div class="linkedin-logo">
+                        <img src="assets/linkedin.png" alt="LinkedIn" />
+                    </div>
+                </div>
+                <blockquote>
+                    "Luke has exceptional initiative, problem-solving skills, and passion for continuous learning. 
+                    He manages a $1B+ commercial portfolio with expertise in Python and SQL, and now is working on 
+                    loss predicting models for the CCB SaaS Division. He excels at converting incomplete data sources 
+                    into strategic business decisions, driving impactful results. His dedication and innovative mindset 
+                    make him an invaluable asset to any team."
+                </blockquote>
+            </div>
+        </a>
+        
+        <a href="https://www.linkedin.com/in/luke-ellis-89b43a173/" target="_blank" class="testimonial-link">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="recommender-info">
+                        <strong>Katie Rivas, EMBA</strong>
+                        <span>Senior Product Manager at Amazon</span>
+                        <div class="recommendation-date">September 4, 2020, Katie was senior to Luke</div>
+                    </div>
+                    <div class="linkedin-logo">
+                        <img src="assets/linkedin.png" alt="LinkedIn" />
+                    </div>
+                </div>
+                <blockquote>
+                    "Luke was fantastic to work with! He does a great job of adapting to change quickly, 
+                    creating/improving processes, and most importantly empowering and motivating others 
+                    around him to follow suit. No matter what was thrown at him, he always was so positive 
+                    and offered really good feedback and suggestions. Luke’s work at Amazon truly made an 
+                    impact to both operations processes and employee morale, highly recommend!"
+                </blockquote>
+            </div>
+        </a>
     </div>
-  </section>
-
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Email: ellis.luke.j@gmail.com</p>
-  </section>
-</main>
-
-<footer>
-  <p>&copy; 2025 Luke Ellis</p>
-</footer>
+</section>
+    </section>
+    <footer>
+      <p>&copy; 2025 Luke Ellis</p>
+    </footer>
+  </body>
+</html>
