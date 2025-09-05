@@ -15,8 +15,9 @@
     </header>
 
     <nav>
-      <a href="index.html">About</a>
+      <a href="#about">About</a>
       <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
       <a href="projects.html">Projects</a>
       <a href="contact.html">Contact Me</a>
     </nav>
@@ -39,15 +40,16 @@
           <div class="project-card" onclick="openModal('etlModal')">
             <h3>ETL Pipeline</h3>
             <p>
-              Created an ETL pipeline that extracts transit data from GTFS APIs
-              and transforms it into a star schema data warehouse using Python
-              and PostgreSQL.
+              Built an ETL pipeline that transforms Community Transit’s GTFS
+              data into a star schema warehouse that can process 38,000+ daily
+              transit events. This supports location-based search functions like
+              ‘find nearby bus stops.’
             </p>
           </div>
         </div>
       </section>
 
-      <!-- Modal for Project Details -->
+      <!-- Model for Project Details -->
       <div id="projectModal" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal('projectModal')"
