@@ -17,6 +17,7 @@
     <nav>
       <a href="index.html">About</a>
       <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
       <a href="projects.html">Projects</a>
       <a href="contact.html">Contact Me</a>
     </nav>
@@ -35,19 +36,18 @@
             </p>
           </div>
 
-          <!-- Placeholder for future project -->
+          <!-- Project 2 -->
           <div class="project-card" onclick="openModal('etlModal')">
             <h3>ETL Pipeline</h3>
             <p>
-              Created an ETL pipeline that extracts transit data from GTFS APIs
-              and transforms it into a star schema data warehouse using Python
-              and PostgreSQL.
+              Built an ETL pipeline that transforms Community Transit’s public 
+              GTFS data into a relational database using Python and PostgreSQL.
             </p>
           </div>
         </div>
       </section>
 
-      <!-- Modal for Project Details -->
+      <!-- Modal for NFL Project -->
       <div id="projectModal" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal('projectModal')"
@@ -117,36 +117,30 @@
               formation types (SHOTGUN, SINGLEBACK, I_FORM, etc.) processed
               through OneHotEncoding after removing null values.
             </li>
-
             <li>
               <strong>motionSinceLineset (12.24%)</strong> – Boolean indicator
               of player motion after line set, with nulls imputed using KNN and
               binary encoding applied.
             </li>
-
             <li>
               <strong>receiverAlignment (8.81%)</strong> – Categorical alignment
               patterns (0x0, 1x1, 2x1, etc.) processed through OneHotEncoding.
             </li>
-
             <li>
               <strong>presnap_score_difference (3.79%)</strong> – Engineered
               feature capturing score-based play-calling tendencies (positive
               when SF leads, negative when trailing), standardized for model
               input.
             </li>
-
             <li>
               <strong>down_yardsToGo (3.54%)</strong> – Custom feature
               multiplying down number by yards to go, creating an expanded scale
               that penalizes late downs with high yardage needs.
             </li>
-
             <li>
               <strong>gameClock_seconds (2.04%)</strong> – Game clock converted
               from MM:SS format to seconds and standardized.
             </li>
-
             <li>
               <strong>shiftSinceLineset (2.00%)</strong> – Boolean indicating
               player shifts greater than 2.5 yards from line set position,
@@ -234,176 +228,95 @@
           </p>
         </div>
       </div>
+
       <!-- ETL Pipeline Modal -->
       <div id="etlModal" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal('etlModal')">&times;</span>
 
-          <h2>ETL Pipeline for Transit Data</h2>
+          <h2>Community Transit ETL Pipeline</h2>
 
           <h3>Overview</h3>
           <p>
-            This comprehensive ETL pipeline was designed to modernize transit
-            data management by extracting real-time information from GTFS
-            (General Transit Feed Specification) APIs and transforming it into a
-            structured star schema data warehouse. The system enables transit
-            agencies to perform advanced analytics on ridership patterns, route
-            performance, and operational efficiency while maintaining data
-            integrity and accessibility.
+            This pipeline extracts raw GTFS publicly available data from Community 
+            Transit’s website and transforms it into a database that is ready for 
+            data analytics. Two procedures are also included to maintain the pipeline, 
+            one to remove old calendar dates to save storage space and the other to 
+            identify null values so the data can be fixed. 
           </p>
 
-          <h3>Data Sources & Extraction</h3>
+          <h3>Architecture</h3>
           <p>
-            The pipeline connects to multiple GTFS-RT (Real-Time) and
-            GTFS-Static feeds from major transit agencies including King County
-            Metro, Sound Transit, and regional bus systems. Data extraction
-            occurs every 30 seconds for real-time feeds and daily for static
-            schedule updates. The system handles multiple data formats including
-            protocol buffers, JSON, and CSV files, with robust error handling
-            for API timeouts and malformed data.
+            The database naturally uses the GTFS relationships, the trips table is the 
+            central table since it has two foreign keys. The stop_times table uses a 
+            composite primary key of trip_id and stop_sequence. Indexes were created on 
+            foreign keys and common fields to optimize search time.
           </p>
 
-          <h3>Data Transformation & Validation</h3>
-          <p>
-            Raw transit data undergoes extensive transformation to ensure
-            consistency and quality. Key processes include timezone
-            normalization across different transit systems, route ID
-            standardization, stop location geocoding validation, and vehicle
-            position interpolation for missing GPS coordinates. Data quality
-            checks validate stop times, detect duplicate records, and flag
-            anomalous patterns like vehicles traveling impossible speeds.
-          </p>
-
+          <div class="project-graphs">
+            <img
+              src="assets/ETL_Dag.jpg"
+              alt="ETL Pipeline Architecture Diagram"
+            />
+          </div>
+          
           <div class="performance-metrics">
-            <h4>Technology Stack:</h4>
-            <ul>
-              <li>
-                <strong>Python 3.9+</strong> - Core processing engine with
-                pandas, requests, and schedule libraries
+            <h3>Table Structure</h3>
+            <p>
+                <strong>routes:</strong> Contains all transit routes with route_id 
+                as the primary key. The feature created_at is added to show the ingestion 
+                timestamp.
               </li>
-              <li>
-                <strong>PostgreSQL 14</strong> - Data warehouse with PostGIS
-                extension for geospatial operations
+              <p>
+                <strong>calendar:</strong> Contains the service schedule for transit operations. 
+                Uses a boolean for monday-sunday to show which days are in operation. The feature 
+                created_at is added to show the ingestion timestamp.
               </li>
-              <li>
-                <strong>Apache Airflow</strong> - Workflow orchestration and
-                dependency management
+              <p>
+                <strong>trips:</strong> Contains individual trips with trip_id as the primary key. 
+                The feature created_at is added to show the ingestion timestamp.
               </li>
-              <li>
-                <strong>Redis</strong> - Caching layer for API responses and
-                intermediate processing
+              <p>
+                <strong>stops:</strong> Contains all bus stops including GPS coordinates for each stop. 
+                The load function will remove any coordinates that are incorrect. Added the feature 
+                wheelchair_boarding which is defaulted to true (1). The feature created_at is added to 
+                show the ingestion timestamp.
               </li>
-              <li>
-                <strong>Docker</strong> - Containerized deployment with
-                environment isolation
-              </li>
-              <li>
-                <strong>Prometheus & Grafana</strong> - System monitoring and
-                alerting
+              <p>
+                <strong>stop_times:</strong> Contains every scheduled stop for every trip. Uses a composite 
+                primary key of trip_id and stop_sequence. The feature created_at is added to show the ingestion timestamp.
               </li>
             </ul>
           </div>
 
-          <h3>Star Schema Architecture</h3>
+          <h3>ETL Process</h3>
           <p>
-            The data warehouse implements a dimensional modeling approach
-            optimized for analytical queries. The central fact table captures
-            trip events with foreign keys to dimension tables for routes, stops,
-            vehicles, and time periods. This design enables efficient
-            aggregation queries and supports both historical analysis and
-            real-time dashboard updates.
-          </p>
+            The pipeline consists of two main Python scripts that are executed in sequence. 
+            </li>
+            </p>
+            <p>
+            1.	extract_data.py: Downloads the GTFS data from Community Transit’s websites. 
+            The script extracts the data from the zip file and stores it in a local folder. 
+            </li>
+            <p>
+            2.	load_data.py: Loads the specific data into their designated tables. 
 
+          </p>
           <div class="hyperparameters">
-            <h4>Schema Design:</h4>
-            <pre>
-Fact Table: trip_events (2.3M+ records)
-├── trip_id, stop_id, route_id, vehicle_id
-├── arrival_time, departure_time, delay_seconds
-├── passenger_load, stop_sequence
-└── weather_condition_id, date_key
-
-Dimensions:
-├── dim_routes: route metadata and service patterns
-├── dim_stops: stop locations and accessibility features  
-├── dim_vehicles: fleet information and capacity
-├── dim_time: date/time hierarchies for temporal analysis
-└── dim_weather: conditions affecting service performance
-            </pre>
-          </div>
-
-          <h3>Pipeline Performance & Scalability</h3>
-          <p>
-            The system processes over 50,000 vehicle position updates hourly
-            across 200+ active routes, maintaining sub-second latency for
-            real-time queries. Incremental loading strategies reduce processing
-            time by 75% compared to full refreshes, while automated data
-            partitioning by month ensures consistent query performance as
-            historical data grows.
-          </p>
-
-          <div class="correlation-data">
-            <h4>Key Performance Metrics:</h4>
-            <ul>
-              <li>
-                Data freshness: 95% of records processed within 60 seconds of
-                API availability
+            <h3>Maintenance Procedures</h3>
+            <p>
+                <strong>delete_old_calendar_data:</strong> Automatically removes
+                calendar data older than one year to optimize storage space and
+                query performance
               </li>
-              <li>
-                System uptime: 99.7% availability with automated failover
-                mechanisms
-              </li>
-              <li>
-                Query performance: Complex analytical queries execute in under 3
-                seconds
-              </li>
-              <li>
-                Storage efficiency: 40% reduction in storage requirements
-                through optimal indexing
+              <p>
+                <strong>check_null_values:</strong> Systematically scans all
+                tables and columns to identify null values, providing detailed
+                reports on data completeness for proactive quality management
               </li>
             </ul>
           </div>
 
-          <h3>Data Quality & Monitoring</h3>
-          <p>
-            Comprehensive data quality frameworks ensure reliable analytics
-            output. Automated validation rules check for temporal consistency,
-            geographic boundaries, and business logic violations. Real-time
-            monitoring tracks data pipeline health, API response times, and data
-            volume anomalies, with alert systems notifying administrators of
-            critical issues within minutes.
-          </p>
-
-          <h3>Business Intelligence Integration</h3>
-          <p>
-            The warehouse powers multiple analytical applications including
-            route optimization dashboards, ridership forecasting models, and
-            operational performance reports. Integration with Tableau and Power
-            BI enables self-service analytics for transit planners, while
-            RESTful APIs provide programmatic access for custom applications and
-            mobile transit apps.
-          </p>
-
-          <h3>Security & Compliance</h3>
-          <p>
-            The pipeline implements enterprise-grade security measures including
-            encrypted data transmission, role-based access controls, and audit
-            logging for all data modifications. GDPR compliance mechanisms
-            ensure passenger privacy protection, while automated backup systems
-            maintain data availability with 99.9% recovery guarantees.
-          </p>
-
-          <h3>Future Enhancements & Roadmap</h3>
-          <p>
-            Planned improvements include machine learning integration for
-            predictive maintenance, expansion to additional transit agencies,
-            and real-time passenger counting through mobile app integration.
-            Advanced analytics capabilities will incorporate weather data
-            correlation, special event impact analysis, and dynamic route
-            optimization based on real-time demand patterns.
-          </p>
-        </div>
-      </div>
     </main>
 
     <footer>
